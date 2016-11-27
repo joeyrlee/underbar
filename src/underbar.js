@@ -164,14 +164,26 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    // var acc = accumulator, i = 0;
+    // if(arguments.length < 3){
+    //   acc = collection[0];
+    //   i++;
+    // }
+    // for(i; i < collection.length; i++){
+    //   acc = iterator(acc, collection[i]);
+    // }
+    // return acc;
     var acc = accumulator, i = 0;
     if(arguments.length < 3){
       acc = collection[0];
       i++;
     }
-    for(i; i < collection.length; i++){
-      acc = iterator(acc, collection[i]);
-    }
+    _.each(collection, function(value, idx){
+      //skip the first value if accumulator already inherited it
+      if(!(acc === collection[0] && idx === 0)){
+        acc = iterator(acc, value);
+      }
+    });
     return acc;
   };
 
